@@ -6,9 +6,9 @@ import styles from './App.module.css';
 
 
 const App = () => {
-  const [{isLoading, data, error}, doRequest] = useFetch();
+  const [{isLoading, data, error}, setIsLoading] = useFetch();
 
-  useEffect(() => doRequest(true), [doRequest]);
+  useEffect(() => setIsLoading(true), [setIsLoading]);
   
 
   if (isLoading) {
@@ -16,7 +16,6 @@ const App = () => {
   };
 
   if (error) {
-    console.log(error);
     return (
       <div>
         <h3>Something was wrong!!!</h3>
@@ -25,16 +24,14 @@ const App = () => {
     );
   }
 
-  console.log(data);
 
-
-  return (
+  return data ? (
     <div className={styles.container}>
-      <Cards />
+      <Cards data={data} />
       <Chart />
       <CountryPicker />
     </div>
-  )
-}
+  ) : null;
+};
 
 export default App

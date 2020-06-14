@@ -14,7 +14,7 @@ const useFetch = (url) => {
     if (!isLoading) return;
 
     request(url)
-      .then(({data}) => {
+      .then((data) => {
         if (canceled) return;
 
         setData(data);
