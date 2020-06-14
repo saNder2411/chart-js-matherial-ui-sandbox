@@ -1,38 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 
 import {Cards, Chart, CountryPicker} from './components';
-import {fetchData} from './service';
+import {useFetch} from './hooks';
 import styles from './App.module.css';
 
+
 const App = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [request] = useState(() => fetchData);
+  const [{isLoading, data, error}, doRequest] = useFetch();
 
-  useEffect(() => setIsLoading(true), []);
-
-  useEffect(() => {
-    let canceled = false;
-
-    if (!isLoading) return;
-
-    request()
-      .then(({data}) => {
-        if (canceled) return;
-
-        setData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        if (canceled) return;
-
-         setError(error);
-         setIsLoading(false);
-      });
-
-    return () => canceled = true;
-  }, [isLoading, request]);
+  useEffect(() => doRequest(true), [doRequest]);
+  
 
   if (isLoading) {
     return <h3>Loading...</h3>

@@ -1,8 +1,8 @@
 import Axios from 'axios';
 
-const URL = `https://covid19.mathdro.id/api `;
+const BASE_URL = `https://covid19.mathdro.id/api`;
 
-const fetchData = async (url = URL) => {
+const fetchData = async (url = BASE_URL) => {
   try {
     const response = await Axios.get(url);
 
