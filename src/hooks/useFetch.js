@@ -19,6 +19,7 @@ const useFetch = (url) => {
 
         setData(data);
         setIsLoading(false);
+        setError(null);
       })
       .catch((error) => {
         if (canceled) return;

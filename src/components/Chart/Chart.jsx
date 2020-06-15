@@ -6,8 +6,8 @@ import {useFetch} from '../../hooks';
 import styles from './Chart.module.css';
 
 
-const Chart = () => {
-  const [{isLoading, data, error}, setIsLoading] = useFetch(EndPointService.DAILY);
+const Chart = ({data, country}) => {
+  const [{isLoading, data: dailyData, error}, setIsLoading] = useFetch(EndPointService.DAILY);
 
   useEffect(() => setIsLoading(true), [setIsLoading]);
   
@@ -25,14 +25,15 @@ const Chart = () => {
     );
   }
 
-  const modifiedData = data && data.map(({confirmed, deaths, reportDate}) => ({
+  const modifiedData = dailyData && dailyData.map(({confirmed, deaths, reportDate}) => ({
     confirmed: confirmed.total,
     deaths: deaths.total,
     date: reportDate,
   }))
 
-  const lineChart = modifiedData
-    ? (
+  const lineChart = (
+    modifiedData
+      ? (
         <Line 
           data={{
               labels: modifiedData.map(({date}) => date),
@@ -52,12 +53,33 @@ const Chart = () => {
                 },
                 ],
             }} />
-      )
-    : null;
+      ) : null
+  );
+
+  console.log(data)
+
+  const barChart = (
+    data
+      ? (
+        <Bar
+          data={{
+            labels: [`Infected`, `Recovered`, `Deaths`],
+            datasets: [{
+              label: `People`,
+              backgroundColor: [`rgba(0, 0, 250, 0.5)`, `rgba(0, 250, 0, 0.5)`, `rgba(250, 0, 0, 0.5)`],
+              data: [data.confirmed.value, data.recovered.value, data.deaths.value],
+            }]
+          }}
+          options={{
+            legend: {display: false},
+            title: {display: true, text: `Current state in ${country}`},
+          }} />
+      ) : null
+  );
 
   return (
     <div className={styles.container}>
-      {lineChart}
+      {country ? barChart : lineChart}
     </div>
   )
 }
