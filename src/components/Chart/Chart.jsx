@@ -24,11 +24,40 @@ const Chart = () => {
       </div>
     );
   }
-  console.log(data);
+
+  const modifiedData = data && data.map(({confirmed, deaths, reportDate}) => ({
+    confirmed: confirmed.total,
+    deaths: deaths.total,
+    date: reportDate,
+  }))
+
+  const lineChart = modifiedData
+    ? (
+        <Line 
+          data={{
+              labels: modifiedData.map(({date}) => date),
+              datasets: [
+                {
+                  label: `Infected`,
+                  data: modifiedData.map(({confirmed}) => confirmed),
+                  borderColor: `#3333ff`,
+                  fill: true,
+                },
+                {
+                  label: `Deaths`,
+                  data: modifiedData.map(({deaths}) => deaths),
+                  borderColor: `red`,
+                  backgroundColor: `rgba(255, 0, 0, 0.5)`,
+                  fill: true,
+                },
+                ],
+            }} />
+      )
+    : null;
 
   return (
-    <div>
-      Chart
+    <div className={styles.container}>
+      {lineChart}
     </div>
   )
 }
