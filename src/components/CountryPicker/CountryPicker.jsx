@@ -12,7 +12,7 @@ const CountryPicker = ({handleCountyChange}) => {
   useEffect(() => setIsLoading(true), [setIsLoading]);
 
   if (isLoading) {
-    return <h3>Loading...</h3>
+    return <p>Loading...</p>
   };
 
   if (error) {
@@ -29,7 +29,7 @@ const CountryPicker = ({handleCountyChange}) => {
   return modifiedData ? (
     <FormControl className={styles.formControl}>
       <NativeSelect defaultValue="" onChange={handleCountyChange}>
-        <option value="Global">Global</option>
+        <option value="">Global</option>
         {modifiedData.map((country) => <option key={country} value={country}>{country}</option>)}
       </NativeSelect>
     </FormControl>

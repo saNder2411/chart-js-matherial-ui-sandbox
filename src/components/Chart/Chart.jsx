@@ -13,7 +13,7 @@ const Chart = ({data, country}) => {
   
 
   if (isLoading) {
-    return <h3>Loading...</h3>
+    return <p>Loading...</p>
   };
 
   if (error) {
@@ -55,8 +55,6 @@ const Chart = ({data, country}) => {
             }} />
       ) : null
   );
-
-  console.log(data)
 
   const barChart = (
     data

@@ -14,14 +14,10 @@ const App = () => {
   useEffect(() => setIsLoading(true), [setIsLoading, url]);
 
   const handleCountyChange = ({target}) => {
-    if (target.value === `Global`) {
-      setCountry(``);
-      setUrl(``);
-      return;
-    }
+    const countryUrl = target.value ? `/countries/${target.value}` : ``;
 
     setCountry(target.value);
-    setUrl(`/countries/${target.value}`);
+    setUrl(countryUrl);
   };
 
   return (
