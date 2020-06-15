@@ -2,14 +2,20 @@ import Axios from 'axios';
 
 const BASE_URL = `https://covid19.mathdro.id/api`;
 
-const fetchData = async (url = BASE_URL) => {
-  try {
-    const {data: {confirmed, recovered, deaths, lastUpdate}} = await Axios.get(url);
+export const EndPointService = {
+  DAILY: `/daily`,
+};
 
-    return {confirmed, recovered, deaths, lastUpdate};
+const fetchData = async (url = ``) => {
+  try {
+    const {data} = await Axios.get(`${fetchData.baseURL}${url}`);
+
+    return data;
   } catch (error) {
     throw error;
   }
 };
+
+fetchData.baseURL = BASE_URL;
 
 export default fetchData;
