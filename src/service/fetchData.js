@@ -4,6 +4,7 @@ const BASE_URL = `https://covid19.mathdro.id/api`;
 
 export const EndPointService = {
   DAILY: `/daily`,
+  COUNTRIES: `/countries`,
 };
 
 const fetchData = async (url = ``) => {

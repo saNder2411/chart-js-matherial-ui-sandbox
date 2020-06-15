@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {Cards, Chart, CountryPicker} from './components';
 import {useFetch} from './hooks';
@@ -6,32 +6,24 @@ import styles from './App.module.css';
 
 
 const App = () => {
-  const [{isLoading, data, error}, setIsLoading] = useFetch();
+  const [url, setUrl] = useState(``);
+  const [country, setCountry] = useState(``);
+  const [{isLoading, data, error}, setIsLoading] = useFetch(url);
 
-  useEffect(() => setIsLoading(true), [setIsLoading]);
-  
+  useEffect(() => setIsLoading(true), [setIsLoading, url]);
 
-  if (isLoading) {
-    return <h3>Loading...</h3>
+  const handleCountyChange = ({target}) => {
+    setCountry(target.value);
+    setUrl(`/countries/${target.value}`);
   };
 
-  if (error) {
-    return (
-      <div>
-        <h3>Something was wrong!!!</h3>
-        <p>{error.message}</p>
-      </div>
-    );
-  }
-
-
-  return data ? (
+  return (
     <div className={styles.container}>
-      <Cards data={data} />
-      <CountryPicker />
-      <Chart />
+      <Cards isLoading={isLoading} data={data} error={error} />
+      <CountryPicker country={country} handleCountyChange={handleCountyChange} />
+      <Chart data={data} country={country} />
     </div>
-  ) : null;
+  );
 };
 
 export default App

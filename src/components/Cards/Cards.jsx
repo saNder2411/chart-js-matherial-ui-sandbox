@@ -5,8 +5,23 @@ import cx from 'classnames';
 
 import styles from './Cards.module.css';
 
-const Cards = ({data: {confirmed, recovered, deaths, lastUpdate}}) => {
-  return (
+const Cards = ({data, error}) => {
+  const {confirmed, recovered, deaths, lastUpdate} = data ? data : {};
+
+  if (!data) {
+    return <h3>Loading...</h3>
+  }
+
+  if (error) {
+    return (
+      <div>
+        <h3>Something was wrong!!!</h3>
+        <p>{error.message}</p>
+      </div>
+    );
+  }
+
+  return data ? (
     <div className={styles.container}>
       <Grid container spacing={3} justify="center">
         <Grid item component={Card} xs={12} md={3} className={cx(styles.card, styles.infected)}>
@@ -41,7 +56,7 @@ const Cards = ({data: {confirmed, recovered, deaths, lastUpdate}}) => {
         </Grid>
       </Grid>
     </div>
-  )
+  ) : null;
 }
 
 export default Cards;

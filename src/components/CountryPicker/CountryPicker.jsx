@@ -1,11 +1,39 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {NativeSelect, FormControl} from '@material-ui/core';
 
-const CountryPicker = () => {
-  return (
-    <div>
-      CountryPicker
-    </div>
-  )
+import {EndPointService} from '../../service';
+import {useFetch} from '../../hooks';
+import styles from './CountryPicker.module.css';
+
+const CountryPicker = ({handleCountyChange}) => {
+
+  const [{isLoading, data, error}, setIsLoading] = useFetch(EndPointService.COUNTRIES);
+
+  useEffect(() => setIsLoading(true), [setIsLoading]);
+
+  if (isLoading) {
+    return <h3>Loading...</h3>
+  };
+
+  if (error) {
+    return (
+      <div>
+        <h3>Something was wrong!!!</h3>
+        <p>{error.message}</p>
+      </div>
+    );
+  }
+
+  const modifiedData = data && data.countries.map(({name}) => name);
+
+  return modifiedData ? (
+    <FormControl className={styles.formControl}>
+      <NativeSelect defaultValue="" onChange={handleCountyChange}>
+        <option value="global">Global</option>
+        {modifiedData.map((country) => <option key={country} value={country}>{country}</option>)}
+      </NativeSelect>
+    </FormControl>
+  ) : null;
 }
 
 export default CountryPicker;
